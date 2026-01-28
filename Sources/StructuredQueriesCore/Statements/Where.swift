@@ -70,26 +70,30 @@ public struct Where<From: Table>: Sendable {
   }
 
   #if compiler(>=6.1)
-    public static subscript(dynamicMember keyPath: KeyPath<From.Type, Self>) -> Self {
-      From.self[keyPath: keyPath]
-    }
+  public static subscript(dynamicMember keyPath: KeyPath<From.Type, Self>) -> Self {
+    let root: From.Type = From.self
+    return root[keyPath: keyPath]
+  }
 
-    public subscript<each C: QueryRepresentable, each J: Table>(
-      dynamicMember keyPath: KeyPath<From.Type, Select<(repeat each C), From, (repeat each J)>>
-    ) -> Select<(repeat each C), From, (repeat each J)> {
-      self + From.self[keyPath: keyPath]
-    }
+  public subscript<each C: QueryRepresentable, each J: Table>(
+    dynamicMember keyPath: KeyPath<From.Type, Select<(repeat each C), From, (repeat each J)>>
+  ) -> Select<(repeat each C), From, (repeat each J)> {
+    let root: From.Type = From.self
+    return self + root[keyPath: keyPath]
+  }
 
-    public subscript(dynamicMember keyPath: KeyPath<From.Type, Self>) -> Self {
-      self + From.self[keyPath: keyPath]
-    }
+  public subscript(dynamicMember keyPath: KeyPath<From.Type, Self>) -> Self {
+    let root: From.Type = From.self
+    return self + root[keyPath: keyPath]
+  }
 
-    public subscript(
-      dynamicMember keyPath: KeyPath<From.PrimaryTable.Type, Where<From.PrimaryTable>>
-    ) -> Self
-    where From: TableDraft {
-      self + unsafeBitCast(From.PrimaryTable.self[keyPath: keyPath], to: Self.self)
-    }
+  public subscript(
+    dynamicMember keyPath: KeyPath<From.PrimaryTable.Type, Where<From.PrimaryTable>>
+  ) -> Self
+  where From: TableDraft {
+    let root: From.PrimaryTable.Type = From.PrimaryTable.self
+    return self + unsafeBitCast(root[keyPath: keyPath], to: Self.self)
+  }
   #endif
 }
 

@@ -24,23 +24,28 @@ public protocol TableDraft: Table {
   init(_ primaryTable: PrimaryTable)
 }
 
-extension TableDraft {
-  public static subscript(
-    dynamicMember keyPath: KeyPath<PrimaryTable.Type, some Statement<PrimaryTable>>
-  ) -> some Statement<Self> {
-    SQLQueryExpression("\(PrimaryTable.self[keyPath: keyPath])")
-  }
-
-  public static subscript(
-    dynamicMember keyPath: KeyPath<PrimaryTable.Type, some SelectStatementOf<PrimaryTable>>
-  ) -> SelectOf<Self> {
-    unsafeBitCast(PrimaryTable.self[keyPath: keyPath].asSelect(), to: SelectOf<Self>.self)
-  }
-
-  public static var all: SelectOf<Self> {
-    unsafeBitCast(PrimaryTable.all.asSelect(), to: SelectOf<Self>.self)
-  }
-}
+//extension TableDraft {
+//  public static subscript<S: Statement<PrimaryTable>>(
+//    dynamicMember keyPath: KeyPath<PrimaryTable.Type, S>
+//  ) -> some Statement<Self> {
+//    let root: PrimaryTable.Type = PrimaryTable.self
+//    let statement: S = root[keyPath: keyPath]
+//    return SQLQueryExpression(statement.query, as: Self.self)
+//  }
+//
+//  public static subscript<S: SelectStatementOf<PrimaryTable>>(
+//    dynamicMember keyPath: KeyPath<PrimaryTable.Type, S>
+//  ) -> SelectOf<Self> {
+//    let root: PrimaryTable.Type = PrimaryTable.self
+//    let stmt: S = root[keyPath: keyPath]
+//    let select = stmt.asSelect()
+//    return unsafeBitCast(select, to: SelectOf<Self>.self)
+//  }
+//
+//  public static var all: SelectOf<Self> {
+//    unsafeBitCast(PrimaryTable.all.asSelect(), to: SelectOf<Self>.self)
+//  }
+//}
 
 /// A type representing a database table's columns.
 ///

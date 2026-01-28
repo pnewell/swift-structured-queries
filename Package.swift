@@ -47,24 +47,24 @@ let package = Package(
       targets: ["StructuredQueriesTagged"]
     ),
   ],
-  traits: [
-    .trait(
-      name: "StructuredQueriesCasePaths",
-      description: "Introduce enum table support to StructuredQueries."
-    ),
-    .trait(
-      name: "StructuredQueriesTagged",
-      description: "Introduce StructuredQueries conformances to the swift-tagged package."
-    ),
-  ],
+//  traits: [
+//    .trait(
+//      name: "StructuredQueriesCasePaths",
+//      description: "Introduce enum table support to StructuredQueries."
+//    ),
+//    .trait(
+//      name: "StructuredQueriesTagged",
+//      description: "Introduce StructuredQueries conformances to the swift-tagged package."
+//    ),
+//  ],
   dependencies: [
-    .package(url: "https://github.com/pointfreeco/swift-case-paths", from: "1.0.0"),
-    .package(url: "https://github.com/pointfreeco/swift-custom-dump", from: "1.3.3"),
-    .package(url: "https://github.com/pointfreeco/swift-dependencies", from: "1.8.1"),
-    .package(url: "https://github.com/pointfreeco/swift-macro-testing", from: "0.6.3"),
-    .package(url: "https://github.com/pointfreeco/swift-snapshot-testing", from: "1.18.4"),
-    .package(url: "https://github.com/pointfreeco/swift-tagged", from: "0.10.0"),
-    .package(url: "https://github.com/pointfreeco/xctest-dynamic-overlay", from: "1.5.2"),
+    .package(url: "https://github.com/pnewell/swift-case-paths", branch: "main"),
+    .package(url: "https://github.com/pnewell/swift-custom-dump", branch: "main"),
+    .package(url: "https://github.com/pnewell/swift-dependencies", branch: "main"),
+    .package(url: "https://github.com/pnewell/swift-macro-testing", branch: "main"),
+    .package(url: "https://github.com/pnewell/swift-snapshot-testing", branch: "main"),
+    .package(url: "https://github.com/pnewell/swift-tagged", branch: "main"),
+    .package(url: "https://github.com/pnewell/swift-issue-reporting", branch: "main"),
     .package(url: "https://github.com/swiftlang/swift-syntax", "600.0.0"..<"603.0.0"),
   ],
   targets: [
@@ -75,18 +75,18 @@ let package = Package(
         "StructuredQueriesMacros",
         .target(
           name: "StructuredQueriesCasePaths",
-          condition: .when(traits: ["StructuredQueriesCasePaths"])
+//          condition: .when(traits: ["StructuredQueriesCasePaths"])
         ),
         .target(
           name: "StructuredQueriesTagged",
-          condition: .when(traits: ["StructuredQueriesTagged"])
+//          condition: .when(traits: ["StructuredQueriesTagged"])
         ),
       ]
     ),
     .target(
       name: "StructuredQueriesCore",
       dependencies: [
-        .product(name: "IssueReporting", package: "xctest-dynamic-overlay")
+        .product(name: "IssueReporting", package: "swift-issue-reporting")
       ],
       exclude: ["Symbolic Links/README.md"]
     ),
@@ -111,7 +111,7 @@ let package = Package(
       name: "StructuredQueriesSQLiteCore",
       dependencies: [
         "StructuredQueriesCore",
-        .product(name: "IssueReporting", package: "xctest-dynamic-overlay"),
+        .product(name: "IssueReporting", package: "swift-issue-reporting"),
       ]
     ),
     .macro(
@@ -151,7 +151,7 @@ let package = Package(
       dependencies: [
         "StructuredQueriesMacros",
         "StructuredQueriesSQLiteMacros",
-        .product(name: "IssueReporting", package: "xctest-dynamic-overlay"),
+        .product(name: "IssueReporting", package: "swift-issue-reporting"),
         .product(name: "MacroTesting", package: "swift-macro-testing"),
       ]
     ),
